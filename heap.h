@@ -86,7 +86,7 @@ void Heap<T, PComparator>::push(const T& item){
         std::size_t parent_index = (index - 1) / 2;
         T& current = data[index];
         T& parent = data[parent_index];
-        if (comp.operator(current,parent)){
+        if (comp(current,parent)){
             break;
         }
         std::swap(current, parent);
@@ -130,28 +130,28 @@ void Heap<T,PComparator>::pop()
         int rightChildIndex = 2*i + 2;
         if(rightChildIndex >= data.size() || leftChildIndex >= data.size()){
             if(rightChildIndex < data.size()){
-                if(comp.operator(data[i],data[rightChildIndex])){
+                if(comp(data[i],data[rightChildIndex])){
                     std::swap(data[i],data[rightChildIndex]);
                     return;
                 }
             }
             if(leftChildIndex < data.size()){
-                if(comp.operator(data[i],data[leftChildIndex])){
+                if(comp(data[i],data[leftChildIndex])){
                     std::swap(data[i],data[leftChildIndex]);
                     return;
                 }
             }
             return;
         }
-        if(comp.operator(data[rightChildIndex],data[leftChildIndex])){
-            if(comp.operator(data[i],data[leftChildIndex])){
+        if(comp(data[rightChildIndex],data[leftChildIndex])){
+            if(comp(data[i],data[leftChildIndex])){
                 std::swap(data[i],data[leftChildIndex]);
                 i = leftChildIndex;
             }else{
                 break;
             }
         }else{
-            if(comp.operator(data[i],data[rightChildIndex])){
+            if(comp(data[i],data[rightChildIndex])){
                 std::swap(data[i],data[rightChildIndex]);
                 i = rightChildIndex;
             }else{
