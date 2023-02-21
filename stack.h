@@ -10,7 +10,7 @@ class Stack : private std::vector<T>
 {
 public:
     Stack();
-    ~Stack(){}
+    ~Stack();
     bool empty() const;
     size_t size() const;
     void push(const T& item);
