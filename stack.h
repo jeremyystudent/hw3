@@ -10,7 +10,7 @@ class Stack : private std::vector<T>
 {
 public:
     Stack();
-    ~Stack();
+    ~Stack(){}
     bool empty() const;
     size_t size() const;
     void push(const T& item);
@@ -21,6 +21,9 @@ public:
 
 template <typename T>
 Stack<T>::Stack() : std::vector<T>(){}
+
+template<typename T>
+Stack<T>::~Stack() {}
 
 template <typename T>
 size_t Stack<T>::size() const{return std::vector<T>::size();}
