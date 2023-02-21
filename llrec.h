@@ -83,6 +83,7 @@ Node* llfilter(Node* head, Comp pred){
         int val = head->val;
         Node* after = llfilter(head->next, pred);
         if(pred(val)){
+            delete head;
             return after;
         }else{
             head->next = after;
