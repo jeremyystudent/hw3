@@ -61,14 +61,43 @@ public:
 
 private:
   /// Add whatever helper functions and data members you need below
-
-
-
+  std::vector<T> data;
+  int base;
+  PComparator comp;
 
 };
 
 // Add implementation of member functions here
+template <typename T, typename PComparator>
+Heap<T, PComparator>::Heap(int m, PComparator c){
+  base = m;
+  comp = c;
+}
 
+template <typename T, typename PComparator>
+Heap<T, PComparator>::~Heap(){}
+
+template <typename T, typename PComparator>
+void Heap<T, PComparator>::push(const T& item){
+    data.push_back(item);
+    std::size_t index = data.size() - 1;
+    while (index != 0) {
+        std::size_t parent_index = (index - 1) / 2;
+        T& current = data[index];
+        T& parent = data[parent_index];
+        if (comp.operator(current,parent)){
+            break;
+        }
+        std::swap(current, parent);
+        index = parent_index;
+    }
+}
+
+template <typename T, typename PComparator>
+bool Heap<T, PComparator>::empty() const{return size()==0;}
+
+template <typename T, typename PComparator>
+size_t Heap<T, PComparator>::size() const{return data.size();}
 
 // We will start top() for you to handle the case of 
 // calling top on an empty heap
@@ -77,18 +106,10 @@ T const & Heap<T,PComparator>::top() const
 {
   // Here we use exceptions to handle the case of trying
   // to access the top element of an empty heap
-  if(empty()){
-    // ================================
-    // throw the appropriate exception
-    // ================================
-
-
-  }
+  if(empty()){throw std::underflow_error("No item in list");}
   // If we get here we know the heap has at least 1 item
   // Add code to return the top element
-
-
-
+  return data[0];
 }
 
 
@@ -97,19 +118,47 @@ T const & Heap<T,PComparator>::top() const
 template <typename T, typename PComparator>
 void Heap<T,PComparator>::pop()
 {
-  if(empty()){
-    // ================================
-    // throw the appropriate exception
-    // ================================
-
-
-  }
-
-
-
+  if(empty()){throw std::underflow_error("No item in list");}
+    if (data.empty()) {
+        throw std::out_of_range("heap is empty");
+    }
+    std::swap(data[0],data[data.size()-1]);
+    data.pop_back();
+    for(int i = 0;i<data.size();){
+        int leftChildIndex = 2*i + 1;
+        int rightChildIndex = 2*i + 2;
+        if(rightChildIndex >= data.size() || leftChildIndex >= data.size()){
+            if(rightChildIndex < data.size()){
+                if(comp.operator(data[i],data[rightChildIndex])){
+                    std::swap(data[i],data[rightChildIndex]);
+                    return;
+                }
+            }
+            if(leftChildIndex < data.size()){
+                if(comp.operator(data[i],data[leftChildIndex])){
+                    std::swap(data[i],data[leftChildIndex]);
+                    return;
+                }
+            }
+            return;
+        }
+        if(comp.operator(data[rightChildIndex],data[leftChildIndex])){
+            if(comp.operator(data[i],data[leftChildIndex])){
+                std::swap(data[i],data[leftChildIndex]);
+                i = leftChildIndex;
+            }else{
+                break;
+            }
+        }else{
+            if(comp.operator(data[i],data[rightChildIndex])){
+                std::swap(data[i],data[rightChildIndex]);
+                i = rightChildIndex;
+            }else{
+                break;
+            }
+        }
+    }
 }
-
-
 
 #endif
 
